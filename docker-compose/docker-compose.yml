@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+  app_1:
+    build:
+        context: .
+        dockerfile: ./docker/docker-dev/app_1_Dockerfile
+        #하위 디렉토리에서 도커파일을 가져와 현재 폴더에서 빌드를 한다.
+        #도커파일은 자신이 실행 된 곳 보다 상위의 디렉토리에서 파일에 접근이 불가.
+    container_name : app_1
+    volumes:
+      - .:/usr/src/app
+      #디렉토리 간 동기화
+      #먼저 로컬에 있는 데이터가 컨테이너와 동기되고,
+      #그 이후엔 상호간에 동등해진다.
+      #도커파일에서 카피하거나 애드했던 파일들은 사라진다.
+    mem_limit: "1g"
+    expose:
+      - "zzzz"
+      #도커 내부에서 노출된 포트번호, 호스트에선 접근 불가
+  app_2:
+    build:
+        context: .
+        dockerfile: ./docker/docker-dev/app_2_Dockerfile
+    container_name: app_2
+    volumes:
+      - ./file_name:/etc/nginx/file_name
+      #파일 간 동기화
+    ports: 
+        - "xxxx:yyyy"
+      #호스트와 도커내부의 포트를 매핑
+    mem_limit: "1g"
+    depends_on:
+      - app_1
+      #app_1이 빌드 된 뒤에 빌드 됨을 알려줌.
+
+#wsl2방식은 도커를 돌리다보면
+#용량이 한도 끝도없이 늘어남.
+#mem_limit으로 용량제한.
+
+#expose:
+# - "${port_num}"
+#도커 내부에서 컨테이너의 port_num을 노출시킴
+
+#port:
+# - "${host_port}:${container_port}"
+# - 호스트의 포트와 컨테이너의 포트를 연결시킴.
+
+#volume:
+# - ${host_directory}:${container_directory}
+# 호스트의 디렉토리와 컨테이너의 디렉토리를 연동시킴.
+# 실시간 반영이되나
+# nginx와 같은 경우는 config파일을 수정해도
+# 자동으로 재시작이 안되니
+# 컨테이너를 껐다켜주거나 다시 컴포즈를 해야됨.
