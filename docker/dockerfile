@@ -1,0 +1,23 @@
+FROM node:latest
+# latest를 기존환경에 설치된 버전에 맞게 수정
+LABEL Farrar142 "gksdjf1690@gmail.com"
+
+WORKDIR /usr/src/app
+
+COPY ./package.json .
+COPY ./package-lock.json .
+#현재 디렉토리로 파일을 복사 할 때는 .
+COPY ./docker/start-server.sh ./docker/start-server.sh
+#특정한 지점으로 옮길때는 파일명까지 명시.
+#아니면 파일과 디렉토리형식으로 비교함.
+RUN npm install
+# # package.json에 있는 의존성 파일들을 다운로드함.
+COPY ./public ./public
+COPY ./src ./src
+COPY ./server.js .
+# # 소스들을 카피함
+
+EXPOSE 3000
+#ENTRYPOINT cd /docker && ls
+#ENTRYPOINT ["node","server.js"]
+##실행 명령어 리스트 형식으로 작성
