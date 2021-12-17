@@ -1,0 +1,10 @@
+장고에서는 http연결을 받아올때 특별한것들이 필요함.
+
+location / {
+    proxy_pass http://_color_web:port;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host; 
+}
+
+왜그런지 모르겠음.

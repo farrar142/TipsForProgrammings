@@ -2,12 +2,14 @@ version: "3"
 
 services:
   app_1:
+  #projectName_app_1 형식으로 이미지 이름이 생성됨.
     build:
         context: .
         dockerfile: ./docker/docker-dev/app_1_Dockerfile
         #하위 디렉토리에서 도커파일을 가져와 현재 폴더에서 빌드를 한다.
         #도커파일은 자신이 실행 된 곳 보다 상위의 디렉토리에서 파일에 접근이 불가.
     container_name : app_1
+      #컨테이너 네임으로 들어감.
     command:
       - docker/start-server.sh
       # sh명령어는 그냥 실행됨.
