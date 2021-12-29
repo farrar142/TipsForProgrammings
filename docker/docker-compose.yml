@@ -10,6 +10,8 @@ services:
         #도커파일은 자신이 실행 된 곳 보다 상위의 디렉토리에서 파일에 접근이 불가.
     container_name : app_1
       #컨테이너 네임으로 들어감.
+    image: img_name
+      #이미지 이름으로 설정됨
     command:
       - docker/start-server.sh
       # sh명령어는 그냥 실행됨.
@@ -31,10 +33,13 @@ services:
     volumes:
       - ./file_name:/etc/nginx/file_name
       #파일 간 동기화
+      #파일 이름과 똑같은 폴더가 있으면 폴더위치를 먼저 참조함
+      #폴더와 파일이름이 겹치지 않게 설정.
     ports: 
         - "xxxx:yyyy"
       #호스트와 도커내부의 포트를 매핑
     mem_limit: "1g"
+      #센토스에서는 사용 불가한듯 보임. 도커 컴포즈 버전문제"?
     depends_on:
       - app_1
       #app_1이 빌드 된 뒤에 빌드 됨을 알려줌.
